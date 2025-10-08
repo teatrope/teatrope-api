@@ -108,7 +108,7 @@ CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
     'http://10.0.2.2:3000',  # Android emulator default host
     'http://localhost:3000',
-    'https://teatrope.up.railway.app',
+    'https://teatrope-api-production-278a.up.railway.app',
 ]
 CORS_ALLOW_CREDENTIALS = True
 
