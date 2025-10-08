@@ -1,4 +1,5 @@
 import os
+import dj_database_url
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -59,18 +60,11 @@ TEMPLATES = [
 WSGI_APPLICATION = 'teatrope.wsgi.application'
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('MYSQL_DATABASE', 'teatrope'),
-        'USER': os.getenv('MYSQL_USER', 'teatrope'),
-        'PASSWORD': os.getenv('MYSQL_PASSWORD', 'teatrope'),
-        'HOST': os.getenv('MYSQL_HOST', 'db'),
-        'PORT': os.getenv('MYSQL_PORT', '3306'),
-        'OPTIONS': {
-            'charset': 'utf8mb4',
-            'use_unicode': True,
-        }
-    }
+    'default': dj_database_url.config(
+        default=os.getenv('DATABASE_URL'),
+        conn_max_age=600,
+        engine='django.db.backends.mysql'  # Ensure MySQL engine
+    )
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -114,6 +108,7 @@ CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
     'http://10.0.2.2:3000',  # Android emulator default host
     'http://localhost:3000',
+    'https://teatrope.up.railway.app',
 ]
 CORS_ALLOW_CREDENTIALS = True
 
