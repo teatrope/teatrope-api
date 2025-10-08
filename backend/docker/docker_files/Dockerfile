@@ -14,4 +14,4 @@ COPY . /code
 
 EXPOSE $PORT
 
-CMD ["gunicorn", "--bind", "0.0.0.0:$PORT", "teatrope.wsgi:application"]
+CMD gunicorn --bind 0.0.0.0:$PORT teatrope.wsgi:application
