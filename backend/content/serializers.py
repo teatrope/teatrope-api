@@ -66,7 +66,7 @@ class FuncionSerializer(serializers.ModelSerializer):
 
 
 class PersonaSerializer(serializers.ModelSerializer):
-    obra = ObraSerializer(read_only=True)
+    obra = serializers.PrimaryKeyRelatedField(queryset=Obra.objects.all(), help_text='ID of the associated play (UUID)')
 
     class Meta:
         model = Persona
@@ -77,3 +77,11 @@ class PersonaSerializer(serializers.ModelSerializer):
             'nombre_completo': {'help_text': 'Full name'},
             'rol': {'help_text': 'Role (e.g., ACTOR, DIRECTOR)'},
         }
+
+    def validate_obra(self, value):
+        return value
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['obra'] = ObraSerializer(instance.obra).data
+        return representation
