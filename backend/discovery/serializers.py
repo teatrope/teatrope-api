@@ -19,8 +19,8 @@ class ObraVistaCacheSerializer(serializers.ModelSerializer):
 
 
 class RecomendacionSerializer(serializers.ModelSerializer):
-    busqueda = serializers.PrimaryKeyRelatedField(read_only=True, help_text='Associated search')
-    obra = serializers.PrimaryKeyRelatedField(read_only=True, help_text='Recommended play')
+    busqueda = serializers.PrimaryKeyRelatedField(queryset=Busqueda.objects.all(), help_text='ID of the associated search (UUID)')
+    obra = serializers.PrimaryKeyRelatedField(queryset=ObraVistaCache.objects.all(), help_text='ID of the recommended play cache (UUID)')
 
     class Meta:
         model = Recomendacion
@@ -32,6 +32,19 @@ class RecomendacionSerializer(serializers.ModelSerializer):
             'puntuacion': {'help_text': 'Recommendation score'},
             'razon': {'help_text': 'Reason for recommendation'},
         }
+
+    def validate_busqueda(self, value):
+        return value
+
+    def validate_obra(self, value):
+        return value
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        # Nest the related objects for read operations
+        representation['busqueda'] = BusquedaSerializer(instance.busqueda).data
+        representation['obra'] = ObraVistaCacheSerializer(instance.obra).data
+        return representation
 
 
 class BusquedaSerializer(serializers.ModelSerializer):
