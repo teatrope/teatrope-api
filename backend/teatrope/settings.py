@@ -129,13 +129,9 @@ SWAGGER_SETTINGS = {
             'description': "Token-based authentication. Enter 'Token <your_token>' (e.g., 'Token 42f1b0a...')",
         }
     },
-    'USE_SESSION_AUTH': False, # Disable session auth for API
-    'DOC_EXPANSION': 'none', # Collapse all operations by default
-    'OPERATIONS_SORTER': 'alpha', # Sort operations alphabetically
-    'TAGS_SORTER': 'alpha', # Sort tags alphabetically
-    'PERSIST_AUTH': True,  # Keeps token in Swagger UI across refreshes
-    'REFETCH_SCHEMA_WITH_AUTH': True,  # Refetches schema with token
-    'REFETCH_SCHEMA_ON_LOGOUT': True,
-    'DEFAULT_SCHEME': 'https',
-    'VALIDATOR_URL': '',
+    'USE_SESSION_AUTH': False,  # Disable session auth for API
+    'DOC_EXPANSION': 'none',  # Collapse all operations by default
+    'OPERATIONS_SORTER': 'alpha',  # Sort operations alphabetically
+    'TAGS_SORTER': 'alpha',  # Sort tags alphabetically
+    'DEFAULT_SCHEME': 'https',  # Force HTTPS for all schemas/requests in UI
 }
