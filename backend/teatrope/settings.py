@@ -136,4 +136,5 @@ SWAGGER_SETTINGS = {
     'PERSIST_AUTH': True,  # Keeps token in Swagger UI across refreshes
     'REFETCH_SCHEMA_WITH_AUTH': True,  # Refetches schema with token
     'REFETCH_SCHEMA_ON_LOGOUT': True,
+    'DEFAULT_SCHEME': 'https',
 }
