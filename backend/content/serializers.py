@@ -47,6 +47,11 @@ class FuncionSerializer(serializers.ModelSerializer):
             'disponibilidad_asientos': {'help_text': 'Available seats'},
         }
 
+    def validate_teatro(self, value):
+        if not Teatro.objects.filter(id=value.id).exists():
+            raise serializers.ValidationError("Invalid theater ID")
+        return value
+
 
 class PersonaSerializer(serializers.ModelSerializer):
     obra = ObraSerializer(read_only=True)
