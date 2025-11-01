@@ -38,5 +38,6 @@ PY
 
 python manage.py makemigrations accounts content discovery notifications tickets || true
 python manage.py migrate --noinput || true
+python manage.py collectstatic --noinput || true
 
 exec "$@"
