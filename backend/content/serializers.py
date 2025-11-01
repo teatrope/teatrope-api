@@ -1,3 +1,4 @@
+import uuid
 from rest_framework import serializers
 from .models import Teatro, Obra, Funcion, Persona
 
@@ -18,7 +19,7 @@ class TeatroSerializer(serializers.ModelSerializer):
 
 
 class ObraSerializer(serializers.ModelSerializer):
-    teatro = serializers.PrimaryKeyRelatedField(queryset=Teatro.objects.all(), help_text='ID of the associated theater (UUID)')
+    teatro = serializers.UUIDField(help_text='ID of the associated theater (UUID)')
 
     class Meta:
         model = Obra
@@ -32,13 +33,17 @@ class ObraSerializer(serializers.ModelSerializer):
         }
 
     def validate_teatro(self, value):
+        try:
+            value = uuid.UUID(str(value))  # Ensure it's a valid UUID
+        except ValueError:
+            raise serializers.ValidationError("Invalid UUID format for theater ID.")
         if not Teatro.objects.filter(id=value).exists():
             raise serializers.ValidationError("Invalid theater ID - no matching theater found.")
         return value
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        representation['teatro'] = TeatroSerializer(instance.teatro).data  # Nest full theater data for GET responses
+        representation['teatro'] = TeatroSerializer(instance.teatro).data  # Nest for read
         return representation
 
 
