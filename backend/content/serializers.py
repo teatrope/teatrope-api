@@ -18,19 +18,28 @@ class TeatroSerializer(serializers.ModelSerializer):
 
 
 class ObraSerializer(serializers.ModelSerializer):
-    teatro = TeatroSerializer(read_only=True)
+    teatro = serializers.PrimaryKeyRelatedField(queryset=Teatro.objects.all(), help_text='ID of the associated theater (UUID)')
 
     class Meta:
         model = Obra
         fields = '__all__'
         extra_kwargs = {
             'id': {'help_text': 'Unique play ID (UUID)'},
-            'teatro': {'help_text': 'Associated theater'},
             'titulo': {'help_text': 'Play title'},
             'genero': {'help_text': 'Play genre (e.g., DRAMA, COMEDIA)'},
             'director_nombre': {'help_text': 'Director name'},
             'director_rol': {'help_text': 'Director role (e.g., DIRECTOR)'},
         }
+
+    def validate_teatro(self, value):
+        if not Teatro.objects.filter(id=value).exists():
+            raise serializers.ValidationError("Invalid theater ID - no matching theater found.")
+        return value
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['teatro'] = TeatroSerializer(instance.teatro).data  # Nest for read
+        return representation
 
 
 class FuncionSerializer(serializers.ModelSerializer):
@@ -41,16 +50,10 @@ class FuncionSerializer(serializers.ModelSerializer):
         fields = '__all__'
         extra_kwargs = {
             'id': {'help_text': 'Unique function ID (UUID)'},
-            'obra': {'help_text': 'Associated play'},
             'fecha': {'help_text': 'Function date and time'},
             'duracion_minutos': {'help_text': 'Duration in minutes'},
             'disponibilidad_asientos': {'help_text': 'Available seats'},
         }
-
-    def validate_teatro(self, value):
-        if not Teatro.objects.filter(id=value.id).exists():
-            raise serializers.ValidationError("Invalid theater ID")
-        return value
 
 
 class PersonaSerializer(serializers.ModelSerializer):
@@ -61,7 +64,6 @@ class PersonaSerializer(serializers.ModelSerializer):
         fields = '__all__'
         extra_kwargs = {
             'id': {'help_text': 'Unique person ID (UUID)'},
-            'obra': {'help_text': 'Associated play'},
             'nombre_completo': {'help_text': 'Full name'},
             'rol': {'help_text': 'Role (e.g., ACTOR, DIRECTOR)'},
         }
