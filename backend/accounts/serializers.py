@@ -13,11 +13,12 @@ class UsuarioSerializer(serializers.ModelSerializer):
 
 
 class RegisterSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True, min_length=8)
+    password = serializers.CharField(write_only=True, min_length=8, help_text="Password (minimum 8 characters)")
 
     class Meta:
         model = Usuario
         fields = ['id', 'email', 'password', 'tipo_rol']
+        extra_kwargs = {'email': {'help_text': 'User email address'}}
 
     def create(self, validated_data):
         password = validated_data.pop('password')
@@ -26,8 +27,8 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class LoginSerializer(serializers.Serializer):
-    email = serializers.EmailField()
-    password = serializers.CharField(write_only=True)
+    email = serializers.EmailField(help_text="User email")
+    password = serializers.CharField(write_only=True, help_text="User password")
 
     def validate(self, attrs):
         email = attrs.get('email')
