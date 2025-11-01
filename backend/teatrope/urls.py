@@ -13,12 +13,11 @@ schema_view = get_schema_view(
         default_version='v1',
         description="API documentation for Teatrope, a theater discovery and ticketing platform.",
         terms_of_service="https://teatrope.github.io/teatrope-landing/en/",
-        contact=openapi.Contact(email="contact@teatrope.com"), # Customize this email
+        contact=openapi.Contact(email="contact@teatrope.com"), #cambiar 
         license=openapi.License(name="BSD License"),
     ),
     public=True,
     permission_classes=(permissions.AllowAny,),
-    schemes=['https'],
 )
 
 urlpatterns = [
