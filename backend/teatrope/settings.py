@@ -116,6 +116,8 @@ CORS_ALLOWED_ORIGINS = [
     'https://teatrope-api-production-278a.up.railway.app',
 ]
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS']  # Add this to ensure all methods (including OPTIONS for preflight)
+CORS_ALLOW_HEADERS = ['Authorization', 'Content-Type', 'X-CSRFToken']  # Add if using token auth
 
 AUTH_USER_MODEL = 'accounts.Usuario'
 
