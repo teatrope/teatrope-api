@@ -7,14 +7,14 @@ class ObraVistaCacheSerializer(serializers.ModelSerializer):
         model = ObraVistaCache
         fields = '__all__'
         extra_kwargs = {
-            'id': {'help_text': 'Unique cache ID'},
+            'id': {'help_text': 'Unique cache ID (UUID)'},
             'titulo': {'help_text': 'Play title'},
-            'genero': {'help_text': 'Play genre'},
-            'calle': {'help_text': 'Theater street'},
-            'distrito': {'help_text': 'Theater district'},
-            'latitud': {'help_text': 'Theater latitude'},
-            'longitud': {'help_text': 'The theater longitude'},
-            'funciones_json': {'help_text': 'JSON of associated functions'},
+            'genero': {'help_text': 'Play genre (e.g., DRAMA, COMEDIA)'},
+            'calle': {'help_text': 'Street address'},
+            'distrito': {'help_text': 'District'},
+            'latitud': {'help_text': 'Latitude coordinate'},
+            'longitud': {'help_text': 'Longitude coordinate'},
+            'funciones_json': {'help_text': 'JSON of functions'},
         }
 
 
@@ -41,15 +41,16 @@ class BusquedaSerializer(serializers.ModelSerializer):
         model = Busqueda
         fields = '__all__'
         extra_kwargs = {
-            'id': {'help_text': 'Unique search ID'},
-            'usuario_id': {'help_text': 'User ID'},
+            'id': {'help_text': 'Unique search ID (UUID)'},
+            'usuario_id': {'help_text': 'User ID (UUID)'},
             'timestamp': {'help_text': 'Search timestamp'},
-            'genero_filtro': {'help_text': 'Genre filter'},
+            'genero_filtro': {'help_text': 'Genre filter (e.g., DRAMA)'},
             'calle_filtro': {'help_text': 'Street filter'},
             'distrito_filtro': {'help_text': 'District filter'},
             'latitud_filtro': {'help_text': 'Latitude filter'},
             'longitud_filtro': {'help_text': 'Longitude filter'},
             'fecha_inicio': {'help_text': 'Start date filter'},
             'fecha_fin': {'help_text': 'End date filter'},
+            'recomendaciones': {'help_text': 'List of recommendations for this search'},
         }
 
