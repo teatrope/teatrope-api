@@ -14,5 +14,5 @@ COPY . /code
 
 EXPOSE $PORT
 
-ENTRYPOINT ["sh", "/backend/docker/entrypoints/entrypoint.sh"]
+ENTRYPOINT ["sh", "/code/docker/entrypoints/entrypoint.sh"]
 CMD gunicorn --bind 0.0.0.0:$PORT teatrope.wsgi:application
