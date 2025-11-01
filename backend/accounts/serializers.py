@@ -10,6 +10,17 @@ class UsuarioSerializer(serializers.ModelSerializer):
             'id', 'email', 'tipo_rol', 'permisos_json', 'generos_preferidos_json',
             'calle_preferida', 'distrito_preferida', 'latitud_preferida', 'longitud_preferida'
         ]
+        extra_kwargs = {
+            'id': {'help_text': 'Unique user ID'},
+            'email': {'help_text': 'User email address'},
+            'tipo_rol': {'help_text': 'User role type'},
+            'permisos_json': {'help_text': 'JSON of user permissions'},
+            'generos_preferidos_json': {'help_text': 'JSON of preferred genres'},
+            'calle_preferida': {'help_text': 'Preferred street'},
+            'distrito_preferida': {'help_text': 'Preferred district'},
+            'latitud_preferida': {'help_text': 'Preferred latitude'},
+            'longitud_preferida': {'help_text': 'Preferred longitude'},
+        }
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -18,7 +29,10 @@ class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
         fields = ['id', 'email', 'password', 'tipo_rol']
-        extra_kwargs = {'email': {'help_text': 'User email address'}}
+        extra_kwargs = {
+            'email': {'help_text': 'User email address'},
+            'tipo_rol': {'help_text': 'User role type'},
+        }
 
     def create(self, validated_data):
         password = validated_data.pop('password')
