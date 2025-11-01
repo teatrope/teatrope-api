@@ -38,7 +38,7 @@ class ObraSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        representation['teatro'] = TeatroSerializer(instance.teatro).data  # Nest for read
+        representation['teatro'] = TeatroSerializer(instance.teatro).data  # Nest full theater data for GET responses
         return representation
 
 
@@ -50,6 +50,7 @@ class FuncionSerializer(serializers.ModelSerializer):
         fields = '__all__'
         extra_kwargs = {
             'id': {'help_text': 'Unique function ID (UUID)'},
+            'obra': {'help_text': 'Associated play'},
             'fecha': {'help_text': 'Function date and time'},
             'duracion_minutos': {'help_text': 'Duration in minutes'},
             'disponibilidad_asientos': {'help_text': 'Available seats'},
@@ -64,6 +65,7 @@ class PersonaSerializer(serializers.ModelSerializer):
         fields = '__all__'
         extra_kwargs = {
             'id': {'help_text': 'Unique person ID (UUID)'},
+            'obra': {'help_text': 'Associated play'},
             'nombre_completo': {'help_text': 'Full name'},
             'rol': {'help_text': 'Role (e.g., ACTOR, DIRECTOR)'},
         }
