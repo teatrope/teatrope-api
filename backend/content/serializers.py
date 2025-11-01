@@ -42,7 +42,7 @@ class ObraSerializer(serializers.ModelSerializer):
 
 
 class FuncionSerializer(serializers.ModelSerializer):
-    obra = ObraSerializer(read_only=True)
+    obra = serializers.PrimaryKeyRelatedField(queryset=Obra.objects.all(), help_text='ID of the associated play (UUID)')
 
     class Meta:
         model = Funcion
@@ -54,6 +54,15 @@ class FuncionSerializer(serializers.ModelSerializer):
             'duracion_minutos': {'help_text': 'Duration in minutes'},
             'disponibilidad_asientos': {'help_text': 'Available seats'},
         }
+
+    def validate_obra(self, value):
+        # Value is already the PK (UUID); PrimaryKeyRelatedField handles existence
+        return value
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['obra'] = ObraSerializer(instance.obra).data  # Nest for read
+        return representation
 
 
 class PersonaSerializer(serializers.ModelSerializer):
