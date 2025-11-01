@@ -132,4 +132,7 @@ SWAGGER_SETTINGS = {
     'DOC_EXPANSION': 'none', # Collapse all operations by default
     'OPERATIONS_SORTER': 'alpha', # Sort operations alphabetically
     'TAGS_SORTER': 'alpha', # Sort tags alphabetically
+    'PERSIST_AUTH': True,  # Keeps token in Swagger UI across refreshes
+    'REFETCH_SCHEMA_WITH_AUTH': True,  # Refetches schema with token
+    'REFETCH_SCHEMA_ON_LOGOUT': True,
 }
