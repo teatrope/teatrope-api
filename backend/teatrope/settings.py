@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'drf_yasg',
     'corsheaders',
     'accounts',
     'content',
@@ -114,3 +115,18 @@ CORS_ALLOW_CREDENTIALS = True
 
 AUTH_USER_MODEL = 'accounts.Usuario'
 
+ # drf-yasg settings for Swagger UI
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Token': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+            'description': "Token-based authentication. Enter 'Token <your_token>' (e.g., 'Token 42f1b0a...')",
+        }
+    },
+    'USE_SESSION_AUTH': False, # Disable session auth for API
+    'DOC_EXPANSION': 'none', # Collapse all operations by default
+    'OPERATIONS_SORTER': 'alpha', # Sort operations alphabetically
+    'TAGS_SORTER': 'alpha', # Sort tags alphabetically
+}
