@@ -20,7 +20,7 @@ class NotificacionSerializer(serializers.ModelSerializer):
 
 
 class RecomendacionPersonalizadaSerializer(serializers.ModelSerializer):
-    notificacion = serializers.PrimaryKeyRelatedField(read_only=True, help_text='Associated notification')
+    notificacion = serializers.PrimaryKeyRelatedField(queryset=Notificacion.objects.all(), help_text='ID of the associated notification (UUID)')
 
     class Meta:
         model = RecomendacionPersonalizada
@@ -31,6 +31,15 @@ class RecomendacionPersonalizadaSerializer(serializers.ModelSerializer):
             'score_relevancia': {'help_text': 'Relevance score'},
             'razon': {'help_text': 'Reason for recommendation'},
         }
+
+    def validate_notificacion(self, value):
+        return value
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        # Nest the related notification object for read operations
+        representation['notificacion'] = NotificacionSerializer(instance.notificacion).data
+        return representation
 
 
 class PreferenciasUsuarioSerializer(serializers.ModelSerializer):
