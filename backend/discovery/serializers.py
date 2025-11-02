@@ -41,8 +41,8 @@ class RecomendacionSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        # Nest the related objects for read operations
-        representation['busqueda'] = BusquedaSerializer(instance.busqueda).data
+        # Only nest ObraVistaCacheSerializer to avoid circular dependency
+        # The 'busqueda' field will be represented by its PK (UUID) by default
         representation['obra'] = ObraVistaCacheSerializer(instance.obra).data
         return representation
 
