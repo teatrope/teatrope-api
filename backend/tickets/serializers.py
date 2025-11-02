@@ -19,8 +19,10 @@ class DetalleEntradaSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        # Nest the related reservation object for read operations
-        representation['reserva'] = ReservaSerializer(instance.reserva).data
+        # Remove the nesting of ReservaSerializer to break the circular dependency.
+        # The 'reserva' field will now default to its PrimaryKeyRelatedField representation (the UUID).
+        # If you later need nested reserva data, consider creating a separate serializer for read-only nested views,
+        # or adjust ReservaSerializer to not nest DetalleEntradaSerializer in its own to_representation for certain contexts.
         return representation
 
 
