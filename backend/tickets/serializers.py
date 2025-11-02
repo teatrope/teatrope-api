@@ -3,7 +3,7 @@ from .models import Reserva, DetalleEntrada, DisponibilidadCache
 
 
 class DetalleEntradaSerializer(serializers.ModelSerializer):
-    reserva = serializers.PrimaryKeyRelatedField(read_only=True, help_text='Associated reservation')
+    reserva = serializers.PrimaryKeyRelatedField(queryset=Reserva.objects.all(), help_text='ID of the associated reservation (UUID)')
 
     class Meta:
         model = DetalleEntrada
@@ -13,6 +13,15 @@ class DetalleEntradaSerializer(serializers.ModelSerializer):
             'asiento': {'help_text': 'Seat identifier'},
             'precio': {'help_text': 'Price'},
         }
+
+    def validate_reserva(self, value):
+        return value
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        # Nest the related reservation object for read operations
+        representation['reserva'] = ReservaSerializer(instance.reserva).data
+        return representation
 
 
 class ReservaSerializer(serializers.ModelSerializer):
