@@ -1,4 +1,5 @@
 import os
+import dj_database_url
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -19,6 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'drf_yasg',
     'corsheaders',
     'accounts',
     'content',
@@ -30,6 +32,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Add this right after SecurityMiddleware
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -59,18 +62,11 @@ TEMPLATES = [
 WSGI_APPLICATION = 'teatrope.wsgi.application'
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('MYSQL_DATABASE', 'teatrope'),
-        'USER': os.getenv('MYSQL_USER', 'teatrope'),
-        'PASSWORD': os.getenv('MYSQL_PASSWORD', 'teatrope'),
-        'HOST': os.getenv('MYSQL_HOST', 'db'),
-        'PORT': os.getenv('MYSQL_PORT', '3306'),
-        'OPTIONS': {
-            'charset': 'utf8mb4',
-            'use_unicode': True,
-        }
-    }
+    'default': dj_database_url.config(
+        default=os.getenv('DATABASE_URL'),
+        conn_max_age=600,
+        engine='django.db.backends.mysql'  # Ensures MySQL engine is used
+    )
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -95,6 +91,8 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Where collectstatic dumps files
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'  # Compresses and caches for efficiency
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
@@ -106,6 +104,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
     ),
 }
 
@@ -114,8 +113,27 @@ CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
     'http://10.0.2.2:3000',  # Android emulator default host
     'http://localhost:3000',
+    'https://teatrope-api-production-278a.up.railway.app',
 ]
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS']  # Add this to ensure all methods (including OPTIONS for preflight)
+CORS_ALLOW_HEADERS = ['Authorization', 'Content-Type', 'X-CSRFToken']  # Add if using token auth
 
 AUTH_USER_MODEL = 'accounts.Usuario'
 
+ # drf-yasg settings for Swagger UI
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Token': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+            'description': "Token-based authentication. Enter 'Token <your_token>' (e.g., 'Token 42f1b0a...')",
+        }
+    },
+    'USE_SESSION_AUTH': False,  # Disable session auth for API
+    'DOC_EXPANSION': 'none',  # Collapse all operations by default
+    'OPERATIONS_SORTER': 'alpha',  # Sort operations alphabetically
+    'TAGS_SORTER': 'alpha',  # Sort tags alphabetically
+    'DEFAULT_SCHEME': 'https',  # Force HTTPS for all schemas/requests in UI
+}

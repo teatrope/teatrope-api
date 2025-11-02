@@ -12,5 +12,7 @@ RUN pip install --no-cache-dir -r /code/requirements.txt
 
 COPY . /code
 
-EXPOSE 8001
+EXPOSE $PORT
 
+ENTRYPOINT ["sh", "/code/docker/entrypoints/entrypoint.sh"]
+CMD gunicorn --bind 0.0.0.0:$PORT teatrope.wsgi:application
