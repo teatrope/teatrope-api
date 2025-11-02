@@ -14,6 +14,7 @@ class TeatroSerializer(serializers.ModelSerializer):
             'distrito': {'help_text': 'District'},
             'latitud': {'help_text': 'Latitude coordinate'},
             'longitud': {'help_text': 'Longitude coordinate'},
+            'image_url': {'help_text': 'URL of the theater\'s image'},
         }
 
 
@@ -29,6 +30,7 @@ class ObraSerializer(serializers.ModelSerializer):
             'genero': {'help_text': 'Play genre (e.g., DRAMA, COMEDIA)'},
             'director_nombre': {'help_text': 'Director name'},
             'director_rol': {'help_text': 'Director role (e.g., DIRECTOR)'},
+            'image_url': {'help_text': 'URL of the play\'s image'},
         }
 
     def validate_teatro(self, value):
@@ -76,6 +78,7 @@ class PersonaSerializer(serializers.ModelSerializer):
             'obra': {'help_text': 'Associated play'},
             'nombre_completo': {'help_text': 'Full name'},
             'rol': {'help_text': 'Role (e.g., ACTOR, DIRECTOR)'},
+            'image_url': {'help_text': 'URL of the person\'s image'},
         }
 
     def validate_obra(self, value):

@@ -10,6 +10,13 @@ class Teatro(models.Model):
     distrito = models.CharField(max_length=100)
     latitud = models.FloatField()
     longitud = models.FloatField()
+    image_url = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True, # Critical for existing data during first migration
+        default="https://files.catbox.moe/5o9tom.png",
+        help_text="URL of the theater's image"
+    )
 
     def __str__(self) -> str:
         return self.nombre
@@ -32,6 +39,13 @@ class Obra(models.Model):
     genero = models.CharField(max_length=20, choices=Genero.choices)
     director_nombre = models.CharField(max_length=255)
     director_rol = models.CharField(max_length=20, choices=RolDir.choices, default=RolDir.DIRECTOR)
+    image_url = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True, # Critical for existing data during first migration
+        default="https://files.catbox.moe/ypx6ci.png",
+        help_text="URL of the play's image"
+    )
 
     def __str__(self) -> str:
         return self.titulo
@@ -54,4 +68,10 @@ class Persona(models.Model):
     obra = models.ForeignKey(Obra, on_delete=models.CASCADE, related_name='personas')
     nombre_completo = models.CharField(max_length=255)
     rol = models.CharField(max_length=20, choices=Rol.choices)
-
+    image_url = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True, # Critical for existing data during first migration
+        default="https://files.catbox.moe/yrfczk.png",
+        help_text="URL of the person's image"
+    )
