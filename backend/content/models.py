@@ -46,6 +46,13 @@ class Obra(models.Model):
         default="https://files.catbox.moe/ypx6ci.png",
         help_text="URL of the play's image"
     )
+    buy_url = models.CharField( # New field
+        max_length=255,
+        blank=True,
+        null=True, # Crucial for existing data during first migration
+        default="https://teatrope.github.io/teatrope-landing/en/notfound/",
+        help_text="URL to purchase tickets for the play"
+    )
 
     def __str__(self) -> str:
         return self.titulo

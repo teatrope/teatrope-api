@@ -31,6 +31,7 @@ class ObraSerializer(serializers.ModelSerializer):
             'director_nombre': {'help_text': 'Director name'},
             'director_rol': {'help_text': 'Director role (e.g., DIRECTOR)'},
             'image_url': {'help_text': 'URL of the play\'s image'},
+            'buy_url': {'help_text': 'URL to purchase tickets for the play'},
         }
 
     def validate_teatro(self, value):
