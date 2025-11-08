@@ -110,16 +110,50 @@ REST_FRAMEWORK = {
 
 # CORS: allow Android emulator/device
 CORS_ALLOW_ALL_ORIGINS = False
-CORS_ALLOWED_ORIGINS = [
-    'http://10.0.2.2:3000',  # Android emulator default host
-    'http://localhost:3000',
-    'https://teatrope-api-production-278a.up.railway.app',
-]
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS']  # Add this to ensure all methods (including OPTIONS for preflight)
-CORS_ALLOW_HEADERS = ['Authorization', 'Content-Type', 'X-CSRFToken']  # Add if using token auth
+
+CORS_ALLOWED_ORIGINS = [
+    # Flutter web – development 
+    "http://localhost:8080",
+    "http://127.0.0.1:8080",
+    "http://localhost",
+    "http://127.0.0.1",
+
+    # Android emulator 
+    "http://10.0.2.2:3000",
+    "http://localhost:3000",
+
+    # Production API domain
+    "https://teatrope-api-production-278a.up.railway.app",
+]
+
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
 
 AUTH_USER_MODEL = 'accounts.Usuario'
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://teatrope-api-production-278a.up.railway.app",
+    "https://*.railway.app",
+]
 
  # drf-yasg settings for Swagger UI
 SWAGGER_SETTINGS = {
